@@ -19,13 +19,18 @@ public class Spawner : MonoBehaviour
 
     private IEnumerator SpawnSequence()
     {
-        Spawn(GeneratePosition());
+        if (!GameManager.instance.isGameOver)
+        {
+            Spawn(GeneratePosition());
 
-        MoveTrigger();
+            MoveTrigger();
 
-        if (GameManager.instance.crateCount > 2)
-            GameManager.score++;
-        Debug.Log(GameManager.score);
+            if (GameManager.instance.crateCount > 2)
+            {
+                GameManager.score++;
+                AudioHandler.instance.PlayAudioClip(1);
+            }
+        }
 
         yield return new WaitForSeconds(GameManager.instance.currentSpawnSpeed);
 
@@ -68,9 +73,9 @@ public class Spawner : MonoBehaviour
     {
         float position = Random.Range(-range, range);
 
-        if (range < 2.3f && GameManager.instance.crateCount % 10 == 0)
+        if (range < 2.3f && GameManager.instance.crateCount % 5 == 0)
         {
-            range += 0.2f;
+            range += 0.1f;
         }
 
         return new Vector3(position, 0f, 0f);

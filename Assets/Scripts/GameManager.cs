@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private LevelChanger levelChanger = null;
 
+    public bool isGameOver = false;
+
     private void Start()
     {
         if (instance == null)
@@ -83,8 +85,11 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator CompleteGame()
     {
+        isGameOver = true;
+
         yield return new WaitForSeconds(0.25f);
 
+        AudioHandler.instance.PlayAudioClip(0);
         levelChanger.FadeToLevel(2);
     }
 }

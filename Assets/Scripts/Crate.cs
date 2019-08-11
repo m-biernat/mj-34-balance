@@ -6,7 +6,7 @@ public class Crate : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        GetComponent<Rigidbody>().drag = 2f;
+        //GetComponent<Rigidbody>().drag = 2f;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -14,7 +14,7 @@ public class Crate : MonoBehaviour
         if (GameManager.instance.crateCount != 1 && 
             GameManager.instance.crateCount == id + 1)
         {
-            Debug.Log(name);
+            //Debug.Log(name);
             StartCoroutine(GameManager.instance.CompleteGame());
         }
     }

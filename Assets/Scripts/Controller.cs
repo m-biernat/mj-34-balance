@@ -13,7 +13,23 @@ public class Controller : MonoBehaviour
 
     private void Update()
     {
-        input = Input.GetAxisRaw("Horizontal");
+        if (Input.GetKey(KeyCode.F))
+        {
+            input = -1f;
+        }
+        else if (Input.GetKey(KeyCode.J))
+        {
+            input = 1f;
+        }
+        else
+        {
+            input = 0f;
+        }
+
+        float pos = controlledObject.transform.localPosition.x;
+
+        if ((input > 0f && pos >= 2.25f) || (input < 0f && pos <= -2.25f))
+            input = 0;
     }
 
     private void FixedUpdate()

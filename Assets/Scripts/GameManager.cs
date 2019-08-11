@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -23,6 +22,8 @@ public class GameManager : MonoBehaviour
 
     private Controller controller;
 
+    [SerializeField] private LevelChanger levelChanger = null;
+
     private void Start()
     {
         if (instance == null)
@@ -36,6 +37,9 @@ public class GameManager : MonoBehaviour
         currentSpawnSpeed = startingSpawnSpeed;
 
         controller = GetComponent<Controller>();
+
+        Spawner.hue = 0f;
+        Spawner.range = 0.3f;
 
         spawner.Spawn(new Vector3(0f, -14f, 0f));
         controller.Setup(crates[0].gameObject);
@@ -81,6 +85,6 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.25f);
 
-        SceneManager.LoadScene(0, LoadSceneMode.Single);
+        levelChanger.FadeToLevel(2);
     }
 }

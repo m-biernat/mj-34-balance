@@ -9,6 +9,9 @@ public class Spawner : MonoBehaviour
     [SerializeField]
     private GameObject trigger = null;
 
+    public static float hue;
+    public static float range;
+
     private void OnEnable()
     {
         StartCoroutine(SpawnSequence());
@@ -16,9 +19,13 @@ public class Spawner : MonoBehaviour
 
     private IEnumerator SpawnSequence()
     {
-        Spawn(Vector3.zero);
+        Spawn(GeneratePosition());
 
         MoveTrigger();
+
+        if (GameManager.instance.crateCount > 2)
+            GameManager.score++;
+        Debug.Log(GameManager.score);
 
         yield return new WaitForSeconds(GameManager.instance.currentSpawnSpeed);
 
@@ -28,6 +35,10 @@ public class Spawner : MonoBehaviour
     public void Spawn(Vector3 position)
     {
         GameObject go = Instantiate(spawnable, transform);
+
+        Renderer rend = go.GetComponent<Renderer>();
+        rend.material.SetColor("_BaseColor", Color.HSVToRGB(hue, 0.8f, 0.7f));
+        IncrementColor();
 
         go.GetComponent<Crate>().Setup();
         go.transform.localPosition = position;
@@ -43,5 +54,25 @@ public class Spawner : MonoBehaviour
 
             trigger.transform.position = new Vector3(pos.x, pos.y + 1, pos.z);
         }
+    }
+
+    private void IncrementColor()
+    {
+        hue += 0.01f;
+
+        if (hue >= 1f)
+            hue = 0f;
+    }
+
+    private Vector3 GeneratePosition()
+    {
+        float position = Random.Range(-range, range);
+
+        if (range < 2.3f && GameManager.instance.crateCount % 10 == 0)
+        {
+            range += 0.2f;
+        }
+
+        return new Vector3(position, 0f, 0f);
     }
 }
